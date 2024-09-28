@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proforma Invoice</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+.invoice-container {
+    width: 80%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1, h2 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+p {
+    margin: 5px 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+table th {
+    background-color: #f2f2f2;
+}
+ul {
+    padding-left: 20px;
+}
+ul li {
+    margin-bottom: 5px;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+.invoice-container {
+    width: 80%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1, h2 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+p {
+    margin: 5px 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+table th {
+    background-color: #f2f2f2;
+}
+ul {
+    padding-left: 20px;
+}
+ul li {
+    margin-bottom: 5px;
+}
+
+</style>
+<body>
+    <div class="invoice-container">
+        <h1>Proforma Invoice / Estimate / Quotation</h1>
+        <p><strong>Estimate#:</strong> <%= invoice.estimateNumber %></p>
+        <p><strong>Estimate Date:</strong> <%= invoice.estimateDate %></p>
+        <p><strong>Place Of Supply:</strong> <%= invoice.placeOfSupply %></p>
+
+        <h2>Bill To:</h2>
+        <p><strong>Name:</strong> <%= invoice.billTo.name %></p>
+        <p><strong>Address:</strong> <%= invoice.billTo.address %></p>
+        <p><strong>Phone:</strong> <%= invoice.billTo.phone %></p>
+
+        <h2>Ship To:</h2>
+        <p><strong>Name:</strong> <%= invoice.shipTo.name %></p>
+        <p><strong>Address:</strong> <%= invoice.shipTo.address %></p>
+        <p><strong>Phone:</strong> <%= invoice.shipTo.phone %></p>
+
+        <h2>Item & Description</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item & Description</th>
+                    <th>HSN/SAC</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>IGST%</th>
+                    <th>IGST Amount</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% invoice.items.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= item.description %></td>
+                        <td><%= item.hsnSac %></td>
+                        <td><%= item.qty %></td>
+                        <td>₹<%= item.rate.toLocaleString() %></td>
+                        <td><%= item.igst %>%</td>
+                        <td>₹<%= item.igstAmount.toLocaleString() %></td>
+                        <td>₹<%= item.amount.toLocaleString() %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <h2>Total</h2>
+        <p><strong>Sub Total:</strong> ₹<%= invoice.subTotal.toLocaleString() %></p>
+        <p><strong>Total Taxable Amount:</strong> ₹<%= invoice.taxableAmount.toLocaleString() %></p>
+        <p><strong>IGST (18%):</strong> ₹<%= invoice.igstTotal.toLocaleString() %></p>
+        <p><strong>Total Amount:</strong> ₹<%= invoice.totalAmount.toLocaleString() %></p>
+
+        <h2>Bank Details</h2>
+        <p><strong>Bank Name:</strong> <%= invoice.bankDetails.bankName %></p>
+        <p><strong>Account No:</strong> <%= invoice.bankDetails.accountNo %></p>
+        <p><strong>IFSC Code:</strong> <%= invoice.bankDetails.ifscCode %></p>
+        <p><strong>Account Holder:</strong> <%= invoice.bankDetails.accountHolder %></p>
+
+        <h2>Terms & Conditions</h2>
+        <ul>
+            <% invoice.terms.forEach(function(term) { %>
+                <li><%= term %></li>
+            <% }); %>
+        </ul>
+
+        <p>This is a computer-generated invoice, signature & seal not required.</p>
+    </div>
+</body>
+</html>

@@ -6,14 +6,12 @@ const authenticateToken = (req, res, next) => {
 
     if (!token) {
       req.isAuthenticated = false;
-      // return res.status(401).json({ error: 'Access denied' });
       return next();
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
         req.isAuthenticated = false;
-        // return res.status(403).json({ message: 'Invalid token' });
         return next();
       }
       req.isAuthenticated = true;

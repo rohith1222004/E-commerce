@@ -10,12 +10,13 @@ const { authenticateToken } = require('./middleware/authMiddleware');
 const cart = require('./routes/cartRoutes');
 const users = require('./routes/userRoutes');
 const session = require('express-session');
+const quotation = require('./routes/quotationRoutes');
 
 app.use(session({
-  secret: 'your-secret-key', 
+  secret: process.env.SESSION_SECRET, 
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }       // Set to true if using HTTPS
+  cookie: { secure: false }
 }));
 
 mongoose.connect(process.env.MONGO_URI, {
@@ -31,6 +32,7 @@ app.use('/auth',auth)
 app.use('/product',product)
 app.use('/cart',authenticateToken,cart)
 app.use('/users',users)
+app.use('/quotation',quotation)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
