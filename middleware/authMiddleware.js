@@ -3,11 +3,20 @@ require('dotenv').config()
 
 const authenticateToken = (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token) return res.status(401).json({ error: 'Access denied' });
+
+    if (!token) {
+      req.isAuthenticated = false;
+      // return res.status(401).json({ error: 'Access denied' });
+      return next();
+    }
+
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.status(403).json({ message: 'Invalid token' });
+        req.isAuthenticated = false;
+        // return res.status(403).json({ message: 'Invalid token' });
+        return next();
       }
+      req.isAuthenticated = true;
       req.user = user;     
       next();
     });

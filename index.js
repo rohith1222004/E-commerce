@@ -9,6 +9,14 @@ const product = require('./routes/productRoutes');
 const { authenticateToken } = require('./middleware/authMiddleware');
 const cart = require('./routes/cartRoutes');
 const users = require('./routes/userRoutes');
+const session = require('express-session');
+
+app.use(session({
+  secret: 'your-secret-key', 
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }       // Set to true if using HTTPS
+}));
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -20,7 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth',auth)
-app.use('/product',authenticateToken,product)
+app.use('/product',product)
 app.use('/cart',authenticateToken,cart)
 app.use('/users',users)
 
